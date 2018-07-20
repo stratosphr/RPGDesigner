@@ -2,6 +2,7 @@ package controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
+import models.MasterModel;
 
 /**
  * Created by stratosphr on 20/07/2018.
@@ -20,5 +21,11 @@ public final class MainWindowController {
     private NodesHierarchyController nodesHierarchyController;
     @FXML
     private NodePropertiesController nodePropertiesController;
+
+    public void initModel(MasterModel model) {
+        previewController.initModel(model);
+        nodesHierarchyController.initModel(model);
+        nodePropertiesController.initModel(model);
+    }
 
 }
