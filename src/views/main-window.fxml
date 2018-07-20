@@ -52,8 +52,8 @@
                             </font>
                             <TreeTableView fx:id="table_previewNodeProperties" prefHeight="200.0" prefWidth="200.0">
                                 <columns>
-                                    <TreeTableColumn fx:id="col_properties" editable="false" prefWidth="75.0" sortable="false" text="Property"/>
-                                    <TreeTableColumn fx:id="col_values" editable="false" prefWidth="75.0" sortable="false" text="Value"/>
+                                    <TreeTableColumn fx:id="col_properties" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Property"/>
+                                    <TreeTableColumn fx:id="col_values" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Value"/>
                                 </columns>
                                 <columnResizePolicy>
                                     <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
