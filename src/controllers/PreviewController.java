@@ -16,7 +16,6 @@ public final class PreviewController {
     public void initModel(MasterModel model) {
         Label label = new Label();
         scroll_preview.setContent(label);
-        System.out.println(model);
         model.previewedNodeProperty().addListener((observable, oldValue, newValue) -> label.textProperty().bind(newValue.nameProperty()));
     }
 

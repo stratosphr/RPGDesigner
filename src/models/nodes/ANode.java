@@ -6,6 +6,7 @@ import models.nodes.properties.ANodeProperty;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by stratosphr on 20/07/2018.
@@ -30,7 +31,7 @@ public abstract class ANode {
 
     @Override
     public final String toString() {
-        return nameProperty().get();
+        return nameProperty().get() + " - [" + getProperties().stream().map(property -> property.nameProperty().get() + "=" + property.valueProperty().get()).collect(Collectors.joining(", ")) + "]";
     }
 
 }
