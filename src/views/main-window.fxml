@@ -1,26 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.DropShadow?>
-<?import javafx.scene.input.KeyCodeCombination?>
+<?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Font?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:controller="controllers.MainWindowController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <VBox BorderPane.alignment="CENTER">
-            <MenuBar>
-                <Menu mnemonicParsing="false" text="File">
-                    <MenuItem fx:id="item_quit" text="Quit">
-                        <accelerator>
-                            <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
-                        </accelerator>
-                    </MenuItem>
-                </Menu>
-            </MenuBar>
-            <ToolBar prefHeight="40.0" prefWidth="200.0">
-                <Button fx:id="btn_preview" defaultButton="true" mnemonicParsing="false" text="Preview"/>
-            </ToolBar>
+            <fx:include fx:id="menuBarController" source="menu-bar.fxml"/>
+            <fx:include fx:id="toolBarController" source="tool-bar.fxml"/>
         </VBox>
     </top>
     <center>
@@ -29,37 +16,15 @@
                 <padding>
                     <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
                 </padding>
-                <ScrollPane fx:id="scroll_preview" layoutX="273.0" layoutY="242.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <effect>
-                        <DropShadow/>
-                    </effect>
-                </ScrollPane>
+                <fx:include fx:id="previewController" source="preview.fxml"/>
             </AnchorPane>
             <AnchorPane maxWidth="550.0" minHeight="0.0" minWidth="-Infinity" prefWidth="200.0">
                 <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                        <TitledPane alignment="CENTER" animated="false" collapsible="false" layoutX="21.0" layoutY="27.0" text="Nodes Hierarchy" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <font>
-                                <Font name="System Bold" size="12.0"/>
-                            </font>
-                            <TreeView fx:id="tree_nodesHierarchy" prefHeight="200.0" prefWidth="200.0"/>
-                        </TitledPane>
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+                        <fx:include fx:id="nodesHierarchyController" source="nodes-hierarchy.fxml"/>
                     </AnchorPane>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                        <TitledPane alignment="CENTER" animated="false" collapsible="false" layoutX="14.0" layoutY="37.0" text="Node Properties" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                            <font>
-                                <Font name="System Bold" size="12.0"/>
-                            </font>
-                            <TreeTableView fx:id="table_previewNodeProperties" prefHeight="200.0" prefWidth="200.0">
-                                <columns>
-                                    <TreeTableColumn fx:id="col_properties" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Property"/>
-                                    <TreeTableColumn fx:id="col_values" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Value"/>
-                                </columns>
-                                <columnResizePolicy>
-                                    <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                </columnResizePolicy>
-                            </TreeTableView>
-                        </TitledPane>
+                        <fx:include fx:id="nodePropertiesController" source="node-properties.fxml"/>
                     </AnchorPane>
                 </SplitPane>
             </AnchorPane>

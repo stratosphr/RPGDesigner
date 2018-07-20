@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<TitledPane fx:controller="controllers.NodePropertiesController" alignment="CENTER" animated="false" collapsible="false" layoutX="14.0" layoutY="37.0" text="Node Properties" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <font>
+        <Font name="System Bold" size="12.0"/>
+    </font>
+    <TreeTableView fx:id="table_previewedNodeProperties" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+            <TreeTableColumn fx:id="col_properties" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Property"/>
+            <TreeTableColumn fx:id="col_values" reorderable="false" editable="false" prefWidth="75.0" sortable="false" text="Value"/>
+        </columns>
+        <columnResizePolicy>
+            <TreeTableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+        </columnResizePolicy>
+    </TreeTableView>
+</TitledPane>

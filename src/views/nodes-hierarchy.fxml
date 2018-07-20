@@ -1,0 +1,10 @@
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<TitledPane fx:controller="controllers.NodesHierarchyController" alignment="CENTER" animated="false" collapsible="false" layoutX="21.0" layoutY="27.0" text="Nodes Hierarchy" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <font>
+        <Font name="System Bold" size="12.0"/>
+    </font>
+    <TreeView fx:id="tree_nodesHierarchy" prefHeight="200.0" prefWidth="200.0"/>
+</TitledPane>

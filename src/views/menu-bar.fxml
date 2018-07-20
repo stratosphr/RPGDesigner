@@ -1,0 +1,13 @@
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.input.KeyCodeCombination?>
+<MenuBar fx:controller="controllers.MenuBarController" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <Menu mnemonicParsing="false" text="File">
+        <MenuItem fx:id="item_quit" text="Quit" onAction="#quit">
+            <accelerator>
+                <KeyCodeCombination alt="UP" code="Q" control="DOWN" meta="UP" shift="UP" shortcut="UP"/>
+            </accelerator>
+        </MenuItem>
+    </Menu>
+</MenuBar>
