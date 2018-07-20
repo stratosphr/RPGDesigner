@@ -1,24 +1,33 @@
 package controllers;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public final class MainWindowController {
+public final class MainWindowController implements Initializable {
 
     @FXML
-    private MenuBar menuBarController;
+    private MenuBar menuBar;
     @FXML
-    private ToolBar toolBarController;
+    private ToolBar toolBar;
     @FXML
     private SplitPane split_main;
     @FXML
-    private ScrollPane previewController;
+    private ScrollPane preview;
     @FXML
-    private TitledPane nodesHierarchyController;
+    private TitledPane nodesHierarchy;
     @FXML
-    private TitledPane nodePropertiesController;
+    private TitledPane nodeProperties;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("##" + split_main.getStyle());
+    }
 
 }
