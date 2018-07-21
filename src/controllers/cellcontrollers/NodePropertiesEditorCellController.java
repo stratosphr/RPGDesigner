@@ -64,10 +64,10 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     @Override
     public Region visit(FileNodeProperty fileNodeProperty) {
         HBox hBox = new HBox();
-        TextField txt_filePath = new TextField();
         Tooltip tooltip = new Tooltip();
         tooltip.setShowDelay(new Duration(100));
-        tooltip.textProperty().bind(txt_filePath.textProperty());
+        TextField txt_filePath = new TextField();
+        txt_filePath.setPromptText("Click to select " + fileNodeProperty.nameProperty().get().toLowerCase() + "...");
         txt_filePath.setEditable(false);
         txt_filePath.prefWidthProperty().bind(param.getTreeTableColumn().widthProperty());
         txt_filePath.textProperty().bindBidirectional(fileNodeProperty.valueProperty(), new StringConverter<>() {
@@ -86,6 +86,7 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
                 txt_filePath.setTooltip(tooltip);
             }
         });
+        tooltip.textProperty().bind(txt_filePath.textProperty());
         Button btn_fileSelection = new Button("...");
         hBox.getChildren().addAll(txt_filePath, btn_fileSelection);
         FileChooser fileChooser = new FileChooser();
@@ -99,6 +100,7 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
                 if (selectedFile != null) {
                     txt_filePath.setText(selectedFile.getAbsolutePath());
                 }
+                btn_fileSelection.requestFocus();
             });
         }
         return hBox;
