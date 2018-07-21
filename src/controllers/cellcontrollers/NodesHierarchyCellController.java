@@ -1,4 +1,4 @@
-package controllers;
+package controllers.cellcontrollers;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextField;

@@ -1,5 +1,6 @@
 package controllers;
 
+import controllers.cellcontrollers.NodesHierarchyCellController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
@@ -8,7 +9,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import models.MasterModel;
 import models.nodes.ANode;
-import models.nodes.properties.ANodeProperty;
+import models.nodes.properties.FileNodeProperty;
+import models.nodes.properties.IntegerNodeProperty;
+import models.nodes.properties.StringNodeProperty;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -43,11 +46,11 @@ public final class NodesHierarchyController implements Initializable {
         tree_nodesHierarchy.setCellFactory(param -> new NodesHierarchyCellController());
         tree_nodesHierarchy.setRoot(new TreeItem<>(new ANode("Project") {
         }));
-        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node1", new ANodeProperty<>("property1", 42) {
-        }, new ANodeProperty<>("property2", "value") {
-        }) {
+        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node1", new IntegerNodeProperty("Value", 42, 1, 50), new StringNodeProperty("Text", "some string")) {
         }));
-        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node2") {
+        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node2", new FileNodeProperty("Image", null)) {
+        }));
+        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node3", new FileNodeProperty("Settings file", null)) {
         }));
         tree_nodesHierarchy.getRoot().setExpanded(true);
     }
