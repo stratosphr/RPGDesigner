@@ -18,7 +18,9 @@ public final class Main extends Application {
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main-window.fxml"));
         primaryStage.setTitle("RPGDesigner");
-        primaryStage.setScene(new Scene(loader.load()));
+        Scene scene = new Scene(loader.load());
+        scene.getStylesheets().add(getClass().getResource("views/css/bluetooth.css").toString());
+        primaryStage.setScene(scene);
         primaryStage.show();
         ((MainWindowController) loader.getController()).initModel(new MasterModel());
     }

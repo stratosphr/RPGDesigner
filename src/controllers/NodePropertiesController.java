@@ -2,7 +2,6 @@ package controllers;
 
 import controllers.cellcontrollers.NodePropertiesEditorCellController;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeTableColumn;
@@ -10,13 +9,10 @@ import javafx.scene.control.TreeTableView;
 import models.MasterModel;
 import models.nodes.properties.ANodeProperty;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public final class NodePropertiesController implements Initializable {
+public final class NodePropertiesController {
 
     @FXML
     private TreeTableView<ANodeProperty<?>> table_previewedNodeProperties;
@@ -24,11 +20,6 @@ public final class NodePropertiesController implements Initializable {
     private TreeTableColumn<ANodeProperty<?>, String> col_properties;
     @FXML
     private TreeTableColumn<ANodeProperty<?>, Node> col_values;
-
-    @SuppressWarnings("unused")
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-    }
 
     public void initModel(MasterModel model) {
         NodePropertiesEditorCellController nodePropertiesEditorCellController = new NodePropertiesEditorCellController(model);
