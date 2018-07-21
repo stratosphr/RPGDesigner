@@ -85,7 +85,6 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
             fileChooser.setTitle("Select " + fileNodeProperty.nameProperty().get().toLowerCase() + " for node \"" + node.get().nameProperty().get() + "\"...");
             if (fileNodeProperty.valueProperty().get() != null) {
                 fileChooser.setInitialDirectory(fileNodeProperty.valueProperty().get().getParentFile());
-                fileChooser.setInitialFileName(fileNodeProperty.valueProperty().get().getName());
             }
             File selectedFile = fileChooser.showOpenDialog(new Stage());
             if (selectedFile != null) {
