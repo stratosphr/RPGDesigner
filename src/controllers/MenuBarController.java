@@ -1,7 +1,6 @@
 package controllers;
 
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
 
@@ -14,7 +13,7 @@ public final class MenuBarController {
     private MenuItem item_quit;
 
     @FXML
-    private void quit(ActionEvent actionEvent) {
+    private void quit() {
         Platform.exit();
     }
 

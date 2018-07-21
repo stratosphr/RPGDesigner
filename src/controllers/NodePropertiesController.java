@@ -27,6 +27,7 @@ public final class NodePropertiesController implements Initializable {
     @FXML
     private TreeTableColumn<ANodeProperty, Node> col_values;
 
+    @SuppressWarnings("unused")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         col_properties.setCellValueFactory(param -> param.getValue().getValue().nameProperty());

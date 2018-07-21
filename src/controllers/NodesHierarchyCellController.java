@@ -2,12 +2,13 @@ package controllers;
 
 import javafx.application.Platform;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TreeCell;
 import models.nodes.ANode;
 
 /**
  * Created by stratosphr on 21/07/2018.
  */
-public class NodesHierarchyCellController extends javafx.scene.control.TreeCell<ANode> {
+public class NodesHierarchyCellController extends TreeCell<ANode> {
 
     private TextField textField;
 

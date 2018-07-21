@@ -23,6 +23,7 @@ public final class NodesHierarchyController implements Initializable {
     @FXML
     private TreeView<ANode> tree_nodesHierarchy;
 
+    @SuppressWarnings("unused")
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
