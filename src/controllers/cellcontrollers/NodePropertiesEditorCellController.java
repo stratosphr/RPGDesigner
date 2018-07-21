@@ -67,6 +67,7 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     public Region visit(FileNodeProperty fileNodeProperty) {
         HBox hBox = new HBox();
         TextField txt_filePath = new TextField();
+        txt_filePath.setEditable(false);
         txt_filePath.prefWidthProperty().bind(param.getTreeTableColumn().widthProperty());
         txt_filePath.textProperty().bindBidirectional(fileNodeProperty.valueProperty(), new StringConverter<>() {
             @Override
@@ -80,18 +81,20 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
             }
         });
         Button btn_fileSelection = new Button("...");
-        FileChooser fileChooser = new FileChooser();
-        btn_fileSelection.setOnAction(event -> {
-            fileChooser.setTitle("Select " + fileNodeProperty.nameProperty().get().toLowerCase() + " for node \"" + node.get().nameProperty().get() + "\"...");
-            if (fileNodeProperty.valueProperty().get() != null) {
-                fileChooser.setInitialDirectory(fileNodeProperty.valueProperty().get().getParentFile());
-            }
-            File selectedFile = fileChooser.showOpenDialog(new Stage());
-            if (selectedFile != null) {
-                txt_filePath.setText(selectedFile.getAbsolutePath());
-            }
-        });
         hBox.getChildren().addAll(txt_filePath, btn_fileSelection);
+        FileChooser fileChooser = new FileChooser();
+        for (Node node1 : hBox.getChildren()) {
+            node1.setOnMouseClicked(event -> {
+                fileChooser.setTitle("Select " + fileNodeProperty.nameProperty().get().toLowerCase() + " for node \"" + node.get().nameProperty().get() + "\"...");
+                if (fileNodeProperty.valueProperty().get() != null) {
+                    fileChooser.setInitialDirectory(fileNodeProperty.valueProperty().get().getParentFile());
+                }
+                File selectedFile = fileChooser.showOpenDialog(new Stage());
+                if (selectedFile != null) {
+                    txt_filePath.setText(selectedFile.getAbsolutePath());
+                }
+            });
+        }
         return hBox;
     }
 
