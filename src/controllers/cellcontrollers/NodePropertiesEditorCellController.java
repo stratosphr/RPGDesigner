@@ -1,6 +1,5 @@
 package controllers.cellcontrollers;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
@@ -8,11 +7,10 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import models.MasterModel;
-import models.nodes.ANode;
 import models.nodes.properties.ANodeProperty;
 import models.nodes.properties.FileNodeProperty;
 import models.nodes.properties.IntegerNodeProperty;
@@ -26,11 +24,11 @@ import java.io.File;
  */
 public final class NodePropertiesEditorCellController implements Callback<TreeTableColumn.CellDataFeatures<ANodeProperty<?>, Node>, ObservableValue<Node>>, IRegionEditableVisitor {
 
-    private final ObjectProperty<ANode> node;
+    private final MasterModel model;
     private TreeTableColumn.CellDataFeatures<ANodeProperty<?>, Node> param;
 
     public NodePropertiesEditorCellController(MasterModel model) {
-        this.node = model.previewedNodeProperty();
+        this.model = model;
     }
 
     @Override
@@ -67,6 +65,9 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     public Region visit(FileNodeProperty fileNodeProperty) {
         HBox hBox = new HBox();
         TextField txt_filePath = new TextField();
+        Tooltip tooltip = new Tooltip();
+        tooltip.setShowDelay(new Duration(100));
+        tooltip.textProperty().bind(txt_filePath.textProperty());
         txt_filePath.setEditable(false);
         txt_filePath.prefWidthProperty().bind(param.getTreeTableColumn().widthProperty());
         txt_filePath.textProperty().bindBidirectional(fileNodeProperty.valueProperty(), new StringConverter<>() {
@@ -80,16 +81,21 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
                 return new File(string);
             }
         });
+        txt_filePath.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.isEmpty()) {
+                txt_filePath.setTooltip(tooltip);
+            }
+        });
         Button btn_fileSelection = new Button("...");
         hBox.getChildren().addAll(txt_filePath, btn_fileSelection);
         FileChooser fileChooser = new FileChooser();
         for (Node node1 : hBox.getChildren()) {
             node1.setOnMouseClicked(event -> {
-                fileChooser.setTitle("Select " + fileNodeProperty.nameProperty().get().toLowerCase() + " for node \"" + node.get().nameProperty().get() + "\"...");
+                fileChooser.setTitle("Select " + fileNodeProperty.nameProperty().get().toLowerCase() + " for node \"" + model.previewedNodeProperty().get().nameProperty().get() + "\"...");
                 if (fileNodeProperty.valueProperty().get() != null) {
                     fileChooser.setInitialDirectory(fileNodeProperty.valueProperty().get().getParentFile());
                 }
-                File selectedFile = fileChooser.showOpenDialog(new Stage());
+                File selectedFile = fileChooser.showOpenDialog(model.getPrimaryStage());
                 if (selectedFile != null) {
                     txt_filePath.setText(selectedFile.getAbsolutePath());
                 }
