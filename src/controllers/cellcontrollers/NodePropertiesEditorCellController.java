@@ -66,6 +66,7 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
         HBox hBox = new HBox();
         Tooltip tooltip = new Tooltip();
         tooltip.setShowDelay(new Duration(100));
+        tooltip.setShowDuration(Duration.INDEFINITE);
         TextField txt_filePath = new TextField();
         txt_filePath.setPromptText("Click to select " + fileNodeProperty.nameProperty().get().toLowerCase() + "...");
         txt_filePath.setEditable(false);
