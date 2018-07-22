@@ -32,6 +32,7 @@ public final class PreviewController implements IPreviewer {
     }
 
     private void previewNode(ANode node) {
+        scroll_preview.setContent(null);
         scroll_preview.setContent(node.accept(this));
     }
 
