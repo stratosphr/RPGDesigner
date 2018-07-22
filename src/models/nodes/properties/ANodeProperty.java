@@ -3,7 +3,7 @@ package models.nodes.properties;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import visitors.IRegionEditable;
+import visitors.nodeproperties.IRegionEditable;
 
 /**
  * Created by stratosphr on 20/07/2018.

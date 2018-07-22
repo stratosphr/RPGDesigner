@@ -15,7 +15,7 @@ import models.nodes.properties.ANodeProperty;
 import models.nodes.properties.FileNodeProperty;
 import models.nodes.properties.IntegerNodeProperty;
 import models.nodes.properties.StringNodeProperty;
-import visitors.IRegionEditableVisitor;
+import visitors.nodeproperties.IRegionEditableVisitor;
 
 import java.io.File;
 

@@ -1,32 +1,39 @@
 package models.nodes;
 
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import models.nodes.properties.ANodeProperty;
+import visitors.preview.IPreviewable;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public abstract class ANode {
+public abstract class ANode implements IPreviewable {
 
     private final StringProperty name;
     private final List<ANodeProperty<?>> properties;
 
-    protected ANode(String name, ANodeProperty<?>... properties) {
+    protected ANode(String name) {
         this.name = new SimpleStringProperty(name);
-        this.properties = Arrays.asList(properties);
+        this.properties = new ArrayList<>();
     }
 
     public final StringProperty nameProperty() {
         return name;
     }
 
-    public List<ANodeProperty<?>> getProperties() {
+    public final List<ANodeProperty<?>> getProperties() {
         return properties;
+    }
+
+    protected final <Value> void addProperty(ANodeProperty<Value> nodeProperty, ObjectProperty<Value> property) {
+        properties.add(nodeProperty);
+        property.bindBidirectional(nodeProperty.valueProperty());
     }
 
     @Override

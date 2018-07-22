@@ -1,7 +1,7 @@
 package models.nodes.properties;
 
 import javafx.scene.layout.Region;
-import visitors.IRegionEditableVisitor;
+import visitors.nodeproperties.IRegionEditableVisitor;
 
 import java.io.File;
 

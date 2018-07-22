@@ -7,13 +7,8 @@ import javafx.scene.control.TreeView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import models.MasterModel;
-import models.nodes.ANode;
 import models.nodes.hierarchy.ANodesHierarchyElement;
-import models.nodes.hierarchy.NodesHierarchyDirectory;
 import models.nodes.hierarchy.NodesHierarchyLeaf;
-import models.nodes.properties.FileNodeProperty;
-import models.nodes.properties.IntegerNodeProperty;
-import models.nodes.properties.StringNodeProperty;
 
 import static javafx.scene.input.KeyCode.F2;
 
@@ -41,20 +36,8 @@ public final class NodesHierarchyController {
         tree_nodesHierarchy.setOnEditCancel(event -> tree_nodesHierarchy.setEditable(false));
         tree_nodesHierarchy.setOnEditCommit(event -> tree_nodesHierarchy.setEditable(false));
         tree_nodesHierarchy.setCellFactory(param -> new NodesHierarchyCellController());
-        NodesHierarchyDirectory root = new NodesHierarchyDirectory("Project");
-        NodesHierarchyDirectory subFolder = new NodesHierarchyDirectory("SubFolder");
-        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node1", new IntegerNodeProperty("Value", 42, 1, 50), new StringNodeProperty("Text", "some string")) {
-        }));
-        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node2", new FileNodeProperty("Image", null)) {
-        }));
-        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node3", new FileNodeProperty("Settings file", null)) {
-        }));
-        subFolder.getChildren().add(new NodesHierarchyLeaf(new ANode("node4", new FileNodeProperty("Image", null)) {
-        }));
-        subFolder.getChildren().add(new NodesHierarchyLeaf(new ANode("node5", new FileNodeProperty("Settings file", null)) {
-        }));
-        root.getChildren().add(subFolder);
-        tree_nodesHierarchy.setRoot(new TreeItem<>(root));
+        model.projectHierarchyProperty().addListener((observable, oldValue, newValue) -> tree_nodesHierarchy.setRoot(new TreeItem<>(newValue)));
+        tree_nodesHierarchy.setRoot(new TreeItem<>(model.projectHierarchyProperty().get()));
         tree_nodesHierarchy.getRoot().setExpanded(true);
         tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             if (event.getClickCount() == 2) {

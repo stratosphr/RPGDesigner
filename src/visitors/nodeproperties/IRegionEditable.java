@@ -1,4 +1,4 @@
-package visitors;
+package visitors.nodeproperties;
 
 import javafx.scene.layout.Region;
 
