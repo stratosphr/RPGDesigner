@@ -2,5 +2,5 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<ScrollPane fx:controller="controllers.PreviewController" fx:id="scroll_preview" layoutX="273.0" layoutY="242.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<ScrollPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.PreviewController" fx:id="scroll_preview" pannable="true" layoutX="273.0" layoutY="242.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/10.0.1">
 </ScrollPane>
