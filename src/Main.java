@@ -19,7 +19,7 @@ public final class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("views/main-window.fxml"));
         primaryStage.setTitle("RPGDesigner");
         Scene scene = new Scene(loader.load());
-        scene.getStylesheets().add(getClass().getResource("views/css/bluetooth.css").toString());
+        scene.getStylesheets().add(getClass().getResource("views/css/greenpeace.css").toString());
         primaryStage.setScene(scene);
         primaryStage.show();
         ((MainWindowController) loader.getController()).initModel(new MasterModel(primaryStage));
