@@ -8,6 +8,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import models.MasterModel;
 import models.nodes.ANode;
+import models.nodes.hierarchy.ANodesHierarchyElement;
+import models.nodes.hierarchy.NodesHierarchyDirectory;
+import models.nodes.hierarchy.NodesHierarchyLeaf;
 import models.nodes.properties.FileNodeProperty;
 import models.nodes.properties.IntegerNodeProperty;
 import models.nodes.properties.StringNodeProperty;
@@ -20,7 +23,7 @@ import static javafx.scene.input.KeyCode.F2;
 public final class NodesHierarchyController {
 
     @FXML
-    private TreeView<ANode> tree_nodesHierarchy;
+    private TreeView<ANodesHierarchyElement> tree_nodesHierarchy;
 
     public void initModel(MasterModel model) {
         tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
@@ -38,18 +41,30 @@ public final class NodesHierarchyController {
         tree_nodesHierarchy.setOnEditCancel(event -> tree_nodesHierarchy.setEditable(false));
         tree_nodesHierarchy.setOnEditCommit(event -> tree_nodesHierarchy.setEditable(false));
         tree_nodesHierarchy.setCellFactory(param -> new NodesHierarchyCellController());
-        tree_nodesHierarchy.setRoot(new TreeItem<>(new ANode("Project") {
+        NodesHierarchyDirectory root = new NodesHierarchyDirectory("Project");
+        NodesHierarchyDirectory subFolder = new NodesHierarchyDirectory("SubFolder");
+        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node1", new IntegerNodeProperty("Value", 42, 1, 50), new StringNodeProperty("Text", "some string")) {
         }));
-        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node1", new IntegerNodeProperty("Value", 42, 1, 50), new StringNodeProperty("Text", "some string")) {
+        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node2", new FileNodeProperty("Image", null)) {
         }));
-        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node2", new FileNodeProperty("Image", null)) {
+        root.getChildren().add(new NodesHierarchyLeaf(new ANode("node3", new FileNodeProperty("Settings file", null)) {
         }));
-        tree_nodesHierarchy.getRoot().getChildren().add(new TreeItem<>(new ANode("node3", new FileNodeProperty("Settings file", null)) {
+        subFolder.getChildren().add(new NodesHierarchyLeaf(new ANode("node4", new FileNodeProperty("Image", null)) {
         }));
+        subFolder.getChildren().add(new NodesHierarchyLeaf(new ANode("node5", new FileNodeProperty("Settings file", null)) {
+        }));
+        root.getChildren().add(subFolder);
+        tree_nodesHierarchy.setRoot(new TreeItem<>(root));
         tree_nodesHierarchy.getRoot().setExpanded(true);
         tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             if (event.getClickCount() == 2) {
-                model.previewedNodeProperty().set(tree_nodesHierarchy.getSelectionModel().getSelectedItem().getValue());
+                TreeItem<ANodesHierarchyElement> selectedItem = tree_nodesHierarchy.getSelectionModel().getSelectedItem();
+                if (selectedItem != null) {
+                    ANodesHierarchyElement value = selectedItem.getValue();
+                    if (!value.isDirectory()) {
+                        model.previewedNodeProperty().set(((NodesHierarchyLeaf) value).getNode());
+                    }
+                }
             }
         });
     }
