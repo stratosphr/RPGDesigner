@@ -7,6 +7,9 @@ import javafx.scene.control.TreeItem;
 import models.nodes.hierarchy.ANodesHierarchyElement;
 import models.nodes.hierarchy.NodesHierarchyDirectory;
 
+import static javafx.scene.input.KeyCode.ENTER;
+import static javafx.scene.input.KeyCode.ESCAPE;
+
 /**
  * Created by stratosphr on 21/07/2018.
  */
@@ -17,6 +20,11 @@ public class NodesHierarchyCellController extends TreeCell<ANodesHierarchyElemen
     private void createTextField() {
         this.textField = new TextField();
         textField.setText(getItem().nameProperty().get());
+        textField.setOnKeyPressed(event -> {
+            if (event.getCode() == ENTER || event.getCode() == ESCAPE) {
+                commitEdit(getItem());
+            }
+        });
         getItem().nameProperty().bindBidirectional(textField.textProperty());
         textField.focusedProperty().addListener((observable, oldValue, focused) -> {
             if (!focused) {
