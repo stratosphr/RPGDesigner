@@ -2,7 +2,6 @@
 
 <!--suppress JavaFxUnresolvedFxIdReference -->
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="controllers.MainWindowController">
@@ -15,9 +14,6 @@
     <center>
         <SplitPane fx:id="split_main" dividerPositions="0.75" minWidth="450.0" prefHeight="160.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <AnchorPane minHeight="0.0" minWidth="-Infinity" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: derive(-fx-base,80%);">
-                <padding>
-                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0"/>
-                </padding>
                 <fx:include fx:id="preview" source="preview.fxml"/>
             </AnchorPane>
             <AnchorPane maxWidth="650.0" minHeight="0.0" minWidth="-Infinity" prefWidth="200.0">
