@@ -1,6 +1,6 @@
 package models.nodes.properties;
 
-import javafx.scene.layout.Region;
+import javafx.scene.control.TextField;
 import visitors.nodeproperties.IRegionEditableVisitor;
 
 /**
@@ -13,7 +13,7 @@ public final class StringNodeProperty extends ANodeProperty<String> {
     }
 
     @Override
-    public Region accept(IRegionEditableVisitor visitor) {
+    public TextField accept(IRegionEditableVisitor visitor) {
         return visitor.visit(this);
     }
 

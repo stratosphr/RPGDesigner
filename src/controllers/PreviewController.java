@@ -7,6 +7,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import models.MasterModel;
 import models.nodes.ANode;
 import models.nodes.TileSet;
@@ -38,8 +42,20 @@ public final class PreviewController implements IPreviewer {
 
     @Override
     public Node visit(TileSet tileSet) {
-        HBox node = new HBox();
+        StackPane node = new StackPane();
         ImageView imageView = new ImageView();
+        VBox grid = new VBox();
+        for (Integer i = 0; i < tileSet.dimensionsProperty().get().secondProperty().get(); i++) {
+            HBox hBox = new HBox();
+            for (Integer j = 0; j < tileSet.dimensionsProperty().get().firstProperty().get(); j++) {
+                Rectangle cell = new Rectangle(tileSet.tilesSizeProperty().get().firstProperty().get().doubleValue(), tileSet.tilesSizeProperty().get().secondProperty().get().doubleValue());
+                cell.setStroke(new Color(0.8, 0.8, 0.8, 0.3));
+                cell.setStrokeWidth(0.5);
+                cell.setFill(Color.TRANSPARENT);
+                hBox.getChildren().add(cell);
+            }
+            grid.getChildren().add(hBox);
+        }
         if (tileSet.imageProperty().get() != null) {
             ProgressBar imageLoadingProgress = new ProgressBar(0);
             node.getChildren().add(imageLoadingProgress);
@@ -56,7 +72,7 @@ public final class PreviewController implements IPreviewer {
                 e.printStackTrace();
             }
         }
-        node.getChildren().addAll(imageView);
+        node.getChildren().addAll(imageView, grid);
         return node;
     }
 

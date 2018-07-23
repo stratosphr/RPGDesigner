@@ -5,19 +5,19 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import models.MasterModel;
-import models.nodes.properties.ANodeProperty;
-import models.nodes.properties.FileNodeProperty;
-import models.nodes.properties.IntegerNodeProperty;
-import models.nodes.properties.StringNodeProperty;
+import models.nodes.properties.*;
+import utilities.Vector;
 import visitors.nodeproperties.IRegionEditableVisitor;
 
 import java.io.File;
+
+import static javafx.geometry.Pos.CENTER;
 
 /**
  * Created by stratosphr on 21/07/2018.
@@ -38,7 +38,7 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     }
 
     @Override
-    public Region visit(IntegerNodeProperty integerNodeProperty) {
+    public Spinner<Integer> visit(IntegerNodeProperty integerNodeProperty) {
         Spinner<Integer> spinner = new Spinner<>(new SpinnerValueFactory.IntegerSpinnerValueFactory(integerNodeProperty.getMin(), integerNodeProperty.getMax(), integerNodeProperty.valueProperty().get()));
         spinner.getEditor().textProperty().bindBidirectional(integerNodeProperty.valueProperty(), new StringConverter<>() {
             @Override
@@ -55,14 +55,14 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     }
 
     @Override
-    public Region visit(StringNodeProperty stringNodeProperty) {
+    public TextField visit(StringNodeProperty stringNodeProperty) {
         TextField textField = new TextField();
         textField.textProperty().bindBidirectional(stringNodeProperty.valueProperty());
         return textField;
     }
 
     @Override
-    public Region visit(FileNodeProperty fileNodeProperty) {
+    public HBox visit(FileNodeProperty fileNodeProperty) {
         HBox hBox = new HBox();
         Tooltip tooltip = new Tooltip();
         tooltip.setShowDelay(new Duration(100));
@@ -104,6 +104,49 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
                 btn_fileSelection.requestFocus();
             });
         }
+        return hBox;
+    }
+
+    @Override
+    public HBox visit(VectorNodeProperty vectorNodeProperty) {
+        HBox hBox = new HBox();
+        hBox.setAlignment(CENTER);
+        hBox.setSpacing(5);
+        VBox firstVBox = new VBox();
+        VBox middleVBox = new VBox();
+        VBox secondVBox = new VBox();
+        Label firstLabel = new Label(vectorNodeProperty.getFirstNodeProperty().nameProperty().get());
+        Spinner<Integer> firstSpinner = vectorNodeProperty.getFirstNodeProperty().accept(this);
+        Label secondLabel = new Label(vectorNodeProperty.getSecondNodeProperty().nameProperty().get());
+        Spinner<Integer> secondSpinner = vectorNodeProperty.getSecondNodeProperty().accept(this);
+        firstSpinner.getEditor().textProperty().bindBidirectional(vectorNodeProperty.getFirstNodeProperty().valueProperty(), new StringConverter<>() {
+            @Override
+            public String toString(Integer integer) {
+                return String.valueOf(integer);
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return Integer.parseInt(string);
+            }
+        });
+        secondSpinner.getEditor().textProperty().bindBidirectional(vectorNodeProperty.getSecondNodeProperty().valueProperty(), new StringConverter<>() {
+            @Override
+            public String toString(Integer integer) {
+                return String.valueOf(integer);
+            }
+
+            @Override
+            public Integer fromString(String string) {
+                return Integer.parseInt(string);
+            }
+        });
+        firstSpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> vectorNodeProperty.valueProperty().set(new Vector(Integer.parseInt(newValue), vectorNodeProperty.valueProperty().get().secondProperty().get())));
+        secondSpinner.getEditor().textProperty().addListener((observable, oldValue, newValue) -> vectorNodeProperty.valueProperty().set(new Vector(vectorNodeProperty.valueProperty().get().firstProperty().get(), Integer.parseInt(newValue))));
+        firstVBox.getChildren().addAll(firstLabel, firstSpinner);
+        middleVBox.getChildren().addAll(new Label(""), new Label("-"));
+        secondVBox.getChildren().addAll(secondLabel, secondSpinner);
+        hBox.getChildren().addAll(firstVBox, middleVBox, secondVBox);
         return hBox;
     }
 

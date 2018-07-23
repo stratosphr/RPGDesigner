@@ -1,6 +1,6 @@
 package models.nodes.properties;
 
-import javafx.scene.layout.Region;
+import javafx.scene.control.Spinner;
 import visitors.nodeproperties.IRegionEditableVisitor;
 
 /**
@@ -26,7 +26,7 @@ public final class IntegerNodeProperty extends ANodeProperty<Integer> {
     }
 
     @Override
-    public Region accept(IRegionEditableVisitor visitor) {
+    public Spinner<Integer> accept(IRegionEditableVisitor visitor) {
         return visitor.visit(this);
     }
 

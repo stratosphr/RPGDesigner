@@ -1,6 +1,6 @@
 package models.nodes.properties;
 
-import javafx.scene.layout.Region;
+import javafx.scene.layout.HBox;
 import visitors.nodeproperties.IRegionEditableVisitor;
 
 import java.io.File;
@@ -15,7 +15,7 @@ public final class FileNodeProperty extends ANodeProperty<File> {
     }
 
     @Override
-    public Region accept(IRegionEditableVisitor visitor) {
+    public HBox accept(IRegionEditableVisitor visitor) {
         return visitor.visit(this);
     }
 
