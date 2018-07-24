@@ -6,12 +6,12 @@ import javafx.beans.property.SimpleObjectProperty;
 /**
  * Created by stratosphr on 22/07/2018.
  */
-public final class Vector {
+public final class Vector2 {
 
     private final ObjectProperty<Integer> first;
     private final ObjectProperty<Integer> second;
 
-    public Vector(Integer first, Integer second) {
+    public Vector2(Integer first, Integer second) {
         this.first = new SimpleObjectProperty<>(first);
         this.second = new SimpleObjectProperty<>(second);
     }
@@ -22,6 +22,11 @@ public final class Vector {
 
     public ObjectProperty<Integer> secondProperty() {
         return second;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + firstProperty().get() + ", " + secondProperty().get() + ")";
     }
 
 }

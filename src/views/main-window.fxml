@@ -4,7 +4,7 @@
 
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.*?>
-<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="750.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="controllers.MainWindowController">
+<BorderPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="950.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/10.0.1" fx:controller="controllers.MainWindowController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <fx:include fx:id="menuBar" source="menu-bar.fxml"/>

@@ -11,15 +11,21 @@ import visitors.nodeproperties.IRegionEditable;
 public abstract class ANodeProperty<Value> implements IRegionEditable {
 
     private final StringProperty name;
+    private final SimpleObjectProperty<Value> defaultValue;
     private final SimpleObjectProperty<Value> value;
 
     protected ANodeProperty(String name, Value defaultValue) {
         this.name = new SimpleStringProperty(name);
+        this.defaultValue = new SimpleObjectProperty<>(defaultValue);
         this.value = new SimpleObjectProperty<>(defaultValue);
     }
 
     public final StringProperty nameProperty() {
         return name;
+    }
+
+    public SimpleObjectProperty<Value> defaultValueProperty() {
+        return defaultValue;
     }
 
     public final SimpleObjectProperty<Value> valueProperty() {

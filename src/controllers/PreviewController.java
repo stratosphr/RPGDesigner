@@ -1,16 +1,13 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.ProgressBar;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import models.MasterModel;
 import models.nodes.ANode;
 import models.nodes.TileSet;
@@ -28,11 +25,7 @@ public final class PreviewController implements IPreviewer {
     private ScrollPane scroll_preview;
 
     public void initModel(MasterModel model) {
-        model.previewedNodeProperty().addListener((previewedNodeObservable, oldPreviewedNode, newPreviewedNode) -> {
-            previewNode(newPreviewedNode);
-            newPreviewedNode.nameProperty().addListener((nameObservable, oldName, newName) -> previewNode(newPreviewedNode));
-            newPreviewedNode.getProperties().forEach(nodeProperty -> nodeProperty.valueProperty().addListener((nodePropertyObservable, oldNodeProperty, newNodeProperty) -> previewNode(newPreviewedNode)));
-        });
+        model.previewedNodeProperty().addListener((previewedNodeObservable, oldPreviewedNode, newPreviewedNode) -> previewNode(newPreviewedNode));
     }
 
     private void previewNode(ANode node) {
@@ -41,39 +34,38 @@ public final class PreviewController implements IPreviewer {
     }
 
     @Override
-    public Node visit(TileSet tileSet) {
-        StackPane node = new StackPane();
-        ImageView imageView = new ImageView();
-        VBox grid = new VBox();
-        for (Integer i = 0; i < tileSet.dimensionsProperty().get().secondProperty().get(); i++) {
-            HBox hBox = new HBox();
-            for (Integer j = 0; j < tileSet.dimensionsProperty().get().firstProperty().get(); j++) {
-                Rectangle cell = new Rectangle(tileSet.tilesSizeProperty().get().firstProperty().get().doubleValue(), tileSet.tilesSizeProperty().get().secondProperty().get().doubleValue());
-                cell.setStroke(new Color(0.8, 0.8, 0.8, 0.3));
-                cell.setStrokeWidth(0.5);
-                cell.setFill(Color.TRANSPARENT);
-                hBox.getChildren().add(cell);
-            }
-            grid.getChildren().add(hBox);
+    public GridPane visit(TileSet tileSet) {
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        try {
+            Image image = new Image(tileSet.imageProperty().get().toURI().toURL().toString());
+            tileSet.tilesSizeProperty().addListener((observable, oldValue, newValue) -> loadGrid(tileSet, grid, image));
+            tileSet.imageProperty().addListener((observable, oldValue, newValue) -> previewNode(tileSet));
+            loadGrid(tileSet, grid, image);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
         }
-        if (tileSet.imageProperty().get() != null) {
-            ProgressBar imageLoadingProgress = new ProgressBar(0);
-            node.getChildren().add(imageLoadingProgress);
-            try {
-                Image image = new Image(tileSet.imageProperty().get().toURI().toURL().toString(), true);
-                imageLoadingProgress.progressProperty().bind(image.progressProperty());
-                imageLoadingProgress.progressProperty().addListener((observable, oldValue, newValue) -> {
-                    if (((Double) newValue) == 1) {
-                        node.getChildren().remove(imageLoadingProgress);
-                    }
-                });
-                imageView.setImage(image);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
+        return grid;
+    }
+
+    private void loadGrid(TileSet tileSet, GridPane grid, Image image) {
+        grid.getChildren().clear();
+        double columns = image.getWidth() / tileSet.tilesSizeProperty().get().firstProperty().get();
+        double rows = image.getHeight() / tileSet.tilesSizeProperty().get().secondProperty().get();
+        for (Integer i = 0; i < columns; i++) {
+            for (Integer j = 0; j < rows; j++) {
+                StackPane imageBorder = new StackPane();
+                imageBorder.setPadding(new Insets(1, 0, 0, 1));
+                imageBorder.setStyle("-fx-border-color: red; -fx-border-width: 1;");
+                ImageView imageView = new ImageView(image);
+                double tilesWidth = tileSet.tilesSizeProperty().get().firstProperty().get();
+                double tilesHeight = tileSet.tilesSizeProperty().get().secondProperty().get();
+                imageView.setViewport(new Rectangle2D(i * tilesWidth, j * tilesHeight, tilesWidth, tilesHeight));
+                imageBorder.getChildren().add(imageView);
+                grid.add(imageBorder, i, j);
             }
         }
-        node.getChildren().addAll(imageView, grid);
-        return node;
     }
 
 }
