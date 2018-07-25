@@ -4,9 +4,12 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.Stage;
 import models.nodes.ANode;
+import models.nodes.Animation;
 import models.nodes.TileSet;
 import models.nodes.hierarchy.NodesHierarchyDirectory;
 import models.nodes.hierarchy.NodesHierarchyLeaf;
+
+import java.util.List;
 
 /**
  * Created by stratosphr on 20/07/2018.
@@ -28,7 +31,7 @@ public final class MasterModel {
         NodesHierarchyDirectory subFolder = new NodesHierarchyDirectory("SubFolder");
         NodesHierarchyDirectory subSubFolder = new NodesHierarchyDirectory("SubSubFolder");
         root.getChildren().add(new NodesHierarchyLeaf(new TileSet("node1")));
-        root.getChildren().add(new NodesHierarchyLeaf(new TileSet("node2")));
+        root.getChildren().add(new NodesHierarchyLeaf(new Animation("node2")));
         subFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("node3")));
         subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("node4")));
         subFolder.getChildren().add(subSubFolder);
@@ -44,8 +47,12 @@ public final class MasterModel {
         return previewedNode;
     }
 
-    public SimpleObjectProperty<NodesHierarchyDirectory> projectHierarchyProperty() {
+    public ObjectProperty<NodesHierarchyDirectory> projectHierarchyProperty() {
         return projectHierarchy;
+    }
+
+    public List<ANode> getProjectNodes() {
+        return projectHierarchyProperty().get().getAllNodes();
     }
 
 }

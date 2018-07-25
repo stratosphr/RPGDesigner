@@ -1,6 +1,7 @@
 package visitors.preview;
 
 import javafx.scene.Node;
+import models.nodes.Animation;
 import models.nodes.TileSet;
 
 /**
@@ -9,5 +10,7 @@ import models.nodes.TileSet;
 public interface IPreviewer {
 
     Node visit(TileSet tileSet);
+
+    Node visit(Animation animation);
 
 }

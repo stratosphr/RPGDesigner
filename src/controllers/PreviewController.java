@@ -1,8 +1,8 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -10,6 +10,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import models.MasterModel;
 import models.nodes.ANode;
+import models.nodes.Animation;
 import models.nodes.TileSet;
 import visitors.preview.IPreviewer;
 
@@ -49,6 +50,11 @@ public final class PreviewController implements IPreviewer {
         return grid;
     }
 
+    @Override
+    public Node visit(Animation animation) {
+        return animation.tileSetProperty().get().accept(this);
+    }
+
     private void loadGrid(TileSet tileSet, GridPane grid, Image image) {
         grid.getChildren().clear();
         double columns = image.getWidth() / tileSet.tilesSizeProperty().get().firstProperty().get();
@@ -56,7 +62,6 @@ public final class PreviewController implements IPreviewer {
         for (Integer i = 0; i < columns; i++) {
             for (Integer j = 0; j < rows; j++) {
                 StackPane imageBorder = new StackPane();
-                imageBorder.setPadding(new Insets(1, 0, 0, 1));
                 imageBorder.setStyle("-fx-border-color: red; -fx-border-width: 1;");
                 ImageView imageView = new ImageView(image);
                 double tilesWidth = tileSet.tilesSizeProperty().get().firstProperty().get();

@@ -2,6 +2,9 @@ package models.nodes.hierarchy;
 
 import models.nodes.ANode;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Created by stratosphr on 22/07/2018.
  */
@@ -17,6 +20,11 @@ public final class NodesHierarchyLeaf extends ANodesHierarchyElement {
 
     public ANode getNode() {
         return node;
+    }
+
+    @Override
+    public List<ANode> getAllNodes() {
+        return Collections.singletonList(node);
     }
 
 }

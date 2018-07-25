@@ -2,21 +2,26 @@ package controllers.cellcontrollers;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import models.MasterModel;
+import models.nodes.ANode;
 import models.nodes.properties.*;
 import utilities.Vector2;
 import utilities.Vector4;
 import visitors.nodeproperties.IRegionEditableVisitor;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static javafx.geometry.Pos.CENTER;
 
@@ -228,6 +233,14 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
         fourthVBox.getChildren().addAll(fourthLabel, fourthSpinner);
         hBox.getChildren().addAll(firstVBox, new VBox(new Label(""), new Label("-")), secondVBox, new VBox(new Label(""), new Label("-")), thirdVBox, new VBox(new Label(""), new Label("-")), fourthVBox);
         return hBox;
+    }
+
+    @Override
+    public <NodeType extends ANode> Region visit(NodeNodeProperty<NodeType> nodeNodeProperty) {
+        ComboBox<ANode> comboBox = new ComboBox<>();
+        List<ANode> nodes = model.getProjectNodes().stream().filter(node -> nodeNodeProperty.getNodeClass().isInstance(node)).collect(Collectors.toList());
+        comboBox.setItems(FXCollections.observableArrayList(nodes));
+        return comboBox;
     }
 
 }
