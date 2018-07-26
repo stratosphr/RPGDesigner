@@ -37,8 +37,8 @@ public final class PreviewController implements IPreviewer {
     @Override
     public GridPane visit(TileSet tileSet) {
         GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
+        grid.setHgap(0);
+        grid.setVgap(0);
         try {
             Image image = new Image(tileSet.imageProperty().get().toURI().toURL().toString());
             tileSet.tilesSizeProperty().addListener((observable, oldValue, newValue) -> loadGrid(tileSet, grid, image));
@@ -52,7 +52,21 @@ public final class PreviewController implements IPreviewer {
 
     @Override
     public Node visit(Animation animation) {
-        return animation.tileSetProperty().get().accept(this);
+        StackPane stackPane = new StackPane();
+        loadFrames(animation, stackPane);
+        animation.tileSetProperty().addListener((observable, oldValue, newValue) -> loadFrames(animation, stackPane));
+        animation.framesProperty().addListener((observable, oldValue, newValue) -> loadFrames(animation, stackPane));
+        return stackPane;
+    }
+
+    private void loadFrames(Animation animation, StackPane stackPane) {
+        stackPane.getChildren().clear();
+        if (animation.tileSetProperty().get() != null) {
+            for (Integer i = animation.framesProperty().get().firstProperty().get(); i <= animation.framesProperty().get().secondProperty().get(); i++) {
+                stackPane.getChildren().add(((GridPane) animation.tileSetProperty().get().accept(this)).getChildren().get(i));
+                System.out.println(((StackPane) (((GridPane) animation.tileSetProperty().get().accept(this)).getChildren().get(i))).getChildren().get(0));
+            }
+        }
     }
 
     private void loadGrid(TileSet tileSet, GridPane grid, Image image) {
@@ -62,7 +76,9 @@ public final class PreviewController implements IPreviewer {
         for (Integer i = 0; i < columns; i++) {
             for (Integer j = 0; j < rows; j++) {
                 StackPane imageBorder = new StackPane();
-                imageBorder.setStyle("-fx-border-color: red; -fx-border-width: 1;");
+                imageBorder.setStyle("-fx-border-color: #00000033; -fx-border-width: 0.5;");
+                imageBorder.setOnMouseEntered(event -> imageBorder.setStyle("-fx-border-color: #00000033; -fx-border-width: 0.5; -fx-background-color: #00000033;"));
+                imageBorder.setOnMouseExited(event -> imageBorder.setStyle("-fx-border-color: #00000033; -fx-border-width: 0.5; -fx-background-color: #00000000;"));
                 ImageView imageView = new ImageView(image);
                 double tilesWidth = tileSet.tilesSizeProperty().get().firstProperty().get();
                 double tilesHeight = tileSet.tilesSizeProperty().get().secondProperty().get();

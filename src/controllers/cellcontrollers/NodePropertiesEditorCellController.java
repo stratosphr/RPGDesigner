@@ -236,10 +236,14 @@ public final class NodePropertiesEditorCellController implements Callback<TreeTa
     }
 
     @Override
-    public <NodeType extends ANode> Region visit(NodeNodeProperty<NodeType> nodeNodeProperty) {
+    public Region visit(NodeNodeProperty nodeNodeProperty) {
         ComboBox<ANode> comboBox = new ComboBox<>();
         List<ANode> nodes = model.getProjectNodes().stream().filter(node -> nodeNodeProperty.getNodeClass().isInstance(node)).collect(Collectors.toList());
         comboBox.setItems(FXCollections.observableArrayList(nodes));
+        comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> nodeNodeProperty.valueProperty().set(newValue));
+        if (nodeNodeProperty.valueProperty().get() != null) {
+            comboBox.getSelectionModel().select(nodeNodeProperty.valueProperty().get());
+        }
         return comboBox;
     }
 
