@@ -1,34 +1,26 @@
 package models.nodes.properties;
 
-import javafx.scene.layout.HBox;
+import javafx.beans.property.SimpleObjectProperty;
 import utilities.Vector2;
-import visitors.nodeproperties.IRegionEditableVisitor;
 
 /**
- * Created by stratosphr on 23/07/2018.
+ * Created by stratosphr on 30/07/2018.
  */
-public final class Vector2Property extends ANodeProperty<Vector2> {
+public final class Vector2Property extends SimpleObjectProperty<Vector2> {
 
-    private final IntegerNodeProperty firstNodeProperty;
-    private final IntegerNodeProperty secondNodeProperty;
-
-    public Vector2Property(String name, Vector2 defaultValue, IntegerNodeProperty firstNodeProperty, IntegerNodeProperty secondNodeProperty) {
-        super(name, defaultValue);
-        this.firstNodeProperty = firstNodeProperty;
-        this.secondNodeProperty = secondNodeProperty;
+    public Vector2Property() {
     }
 
-    public IntegerNodeProperty getFirstNodeProperty() {
-        return firstNodeProperty;
+    public Vector2Property(Vector2 initialValue) {
+        super(initialValue);
     }
 
-    public IntegerNodeProperty getSecondNodeProperty() {
-        return secondNodeProperty;
+    public Vector2Property(Object bean, String name) {
+        super(bean, name);
     }
 
-    @Override
-    public HBox accept(IRegionEditableVisitor visitor) {
-        return visitor.visit(this);
+    public Vector2Property(Object bean, String name, Vector2 initialValue) {
+        super(bean, name, initialValue);
     }
 
 }

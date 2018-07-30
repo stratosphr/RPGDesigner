@@ -1,44 +1,29 @@
 package models.nodes;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import models.nodes.properties.ANodeProperty;
-import visitors.preview.IPreviewable;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import models.nodes.visitors.IVisitableNode;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public abstract class ANode implements IPreviewable {
+public abstract class ANode implements IVisitableNode {
 
-    private final StringProperty name;
-    private final List<ANodeProperty<?>> properties;
+    private final SimpleStringProperty name;
 
-    protected ANode(String name) {
+    public ANode(String name) {
         this.name = new SimpleStringProperty(name);
-        this.properties = new ArrayList<>();
     }
 
-    public final StringProperty nameProperty() {
+    public SimpleStringProperty nameProperty() {
         return name;
     }
 
-    public final List<ANodeProperty<?>> getProperties() {
-        return properties;
+    public String getName() {
+        return name.get();
     }
 
-    protected final <Value> void addProperty(ANodeProperty<Value> nodeProperty, ObjectProperty<Value> property) {
-        properties.add(nodeProperty);
-        property.bindBidirectional(nodeProperty.valueProperty());
-    }
-
-    @Override
-    public final String toString() {
-        return nameProperty().get() + " - [" + getProperties().stream().map(property -> property.nameProperty().get() + "=" + property.valueProperty().get()).collect(Collectors.joining(", ")) + "]";
+    public void setName(String name) {
+        this.name.set(name);
     }
 
 }

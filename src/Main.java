@@ -22,7 +22,7 @@ public final class Main extends Application {
         scene.getStylesheets().add(getClass().getResource("views/css/darkula.css").toString());
         primaryStage.setScene(scene);
         primaryStage.show();
-        ((MainWindowController) loader.getController()).initModel(new MasterModel(primaryStage));
+        ((MainWindowController) loader.getController()).initModel(new MasterModel());
     }
 
 }

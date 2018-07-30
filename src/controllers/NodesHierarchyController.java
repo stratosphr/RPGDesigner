@@ -1,55 +1,71 @@
 package controllers;
 
-import controllers.cellcontrollers.NodesHierarchyCellController;
 import javafx.fxml.FXML;
+import javafx.scene.control.TreeCell;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import models.MasterModel;
 import models.nodes.hierarchy.ANodesHierarchyElement;
-import models.nodes.hierarchy.NodesHierarchyLeaf;
-
-import static javafx.scene.input.KeyCode.F2;
+import models.nodes.hierarchy.NodeLeaf;
+import models.nodes.hierarchy.NodesFolder;
+import models.nodes.hierarchy.visitors.IElementVisitor;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public final class NodesHierarchyController {
+public final class NodesHierarchyController extends AController implements IElementVisitor {
 
     @FXML
     private TreeView<ANodesHierarchyElement> tree_nodesHierarchy;
 
+    private TreeItem<ANodesHierarchyElement> currentFolder;
+
+    @Override
     public void initModel(MasterModel model) {
-        tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
-            if (event.getClickCount() == 3) {
-                tree_nodesHierarchy.setEditable(true);
-                tree_nodesHierarchy.edit(tree_nodesHierarchy.getSelectionModel().getSelectedItem());
+        tree_nodesHierarchy.setCellFactory(param -> new NodeTreeCell());
+        model.getProjectHierarchy().getRoot().accept(this);
+        tree_nodesHierarchy.setRoot(currentFolder);
+    }
+
+    @Override
+    public void visit(NodesFolder folder) {
+        TreeItem<ANodesHierarchyElement> currentFolder = new TreeItem<>(folder);
+        if (this.currentFolder != null) {
+            this.currentFolder.getChildren().add(currentFolder);
+        }
+        this.currentFolder = currentFolder;
+        for (ANodesHierarchyElement nodesHierarchyElement : folder.getChildren()) {
+            nodesHierarchyElement.accept(this);
+            this.currentFolder = currentFolder;
+        }
+    }
+
+    @Override
+    public void visit(NodeLeaf nodeLeaf) {
+        currentFolder.getChildren().add(new TreeItem<>(nodeLeaf));
+    }
+
+    private class NodeTreeCell extends TreeCell<ANodesHierarchyElement> implements IElementVisitor {
+
+        @Override
+        protected void updateItem(ANodesHierarchyElement item, boolean empty) {
+            super.updateItem(item, empty);
+            if (empty) {
+                setText(null);
+                setGraphic(null);
+            } else {
+                setText(item.getName());
             }
-        });
-        tree_nodesHierarchy.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (event.getCode() == F2) {
-                tree_nodesHierarchy.setEditable(true);
-                tree_nodesHierarchy.edit(tree_nodesHierarchy.getSelectionModel().getSelectedItem());
-            }
-        });
-        tree_nodesHierarchy.setOnEditCancel(event -> tree_nodesHierarchy.setEditable(false));
-        tree_nodesHierarchy.setOnEditCommit(event -> tree_nodesHierarchy.setEditable(false));
-        tree_nodesHierarchy.setCellFactory(param -> new NodesHierarchyCellController());
-        model.projectHierarchyProperty().addListener((observable, oldValue, newValue) -> tree_nodesHierarchy.setRoot(new TreeItem<>(newValue)));
-        tree_nodesHierarchy.setRoot(new TreeItem<>(model.projectHierarchyProperty().get()));
-        tree_nodesHierarchy.getRoot().setExpanded(true);
-        tree_nodesHierarchy.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
-            if (event.getClickCount() == 2) {
-                TreeItem<ANodesHierarchyElement> selectedItem = tree_nodesHierarchy.getSelectionModel().getSelectedItem();
-                if (selectedItem != null) {
-                    ANodesHierarchyElement value = selectedItem.getValue();
-                    if (!value.isDirectory()) {
-                        model.previewedNodeProperty().set(((NodesHierarchyLeaf) value).getNode());
-                    }
-                }
-            }
-        });
+        }
+
+        @Override
+        public void visit(NodesFolder folder) {
+        }
+
+        @Override
+        public void visit(NodeLeaf nodeLeaf) {
+        }
+
     }
 
 }

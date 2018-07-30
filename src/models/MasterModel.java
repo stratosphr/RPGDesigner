@@ -1,63 +1,57 @@
 package models;
 
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.stage.Stage;
 import models.nodes.ANode;
-import models.nodes.Animation;
 import models.nodes.TileSet;
-import models.nodes.hierarchy.NodesHierarchyDirectory;
-import models.nodes.hierarchy.NodesHierarchyLeaf;
-
-import java.util.List;
+import models.nodes.hierarchy.NodeLeaf;
+import models.nodes.hierarchy.NodesFolder;
+import models.nodes.hierarchy.NodesHierarchy;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
 public final class MasterModel {
 
-    private final Stage primaryStage;
-    private final ObjectProperty<ANode> previewedNode;
-    private final SimpleObjectProperty<NodesHierarchyDirectory> projectHierarchy;
+    private final NodesHierarchy projectHierarchy;
+    private SimpleObjectProperty<ANode> previewedNode;
 
-    public MasterModel(Stage primaryStage) {
-        this.primaryStage = primaryStage;
+    public MasterModel() {
         this.previewedNode = new SimpleObjectProperty<>(null);
-        this.projectHierarchy = new SimpleObjectProperty<>(createProjectHierarchy());
+        this.projectHierarchy = createProjectHierarchy();
     }
 
-    private NodesHierarchyDirectory createProjectHierarchy() {
-        NodesHierarchyDirectory root = new NodesHierarchyDirectory("Project");
-        NodesHierarchyDirectory subFolder = new NodesHierarchyDirectory("SubFolder");
-        NodesHierarchyDirectory subSubFolder = new NodesHierarchyDirectory("SubSubFolder");
-        root.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset1")));
-        root.getChildren().add(new NodesHierarchyLeaf(new Animation("animation")));
-        subFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset2")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset3")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset4")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset5")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset6")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset7")));
-        subSubFolder.getChildren().add(new NodesHierarchyLeaf(new TileSet("tileset8")));
-        subFolder.getChildren().add(subSubFolder);
-        root.getChildren().add(subFolder);
-        return root;
+    private NodesHierarchy createProjectHierarchy() {
+        NodesHierarchy nodesHierarchy = new NodesHierarchy();
+        NodesFolder root = new NodesFolder("Project");
+        NodesFolder folder1 = new NodesFolder("Folder1");
+        NodesFolder folder2 = new NodesFolder("Folder2");
+        NodesFolder folder3 = new NodesFolder("Folder3");
+        folder1.getChildren().add(new NodeLeaf(new TileSet("tileset1_0")));
+        folder1.getChildren().add(folder3);
+        folder1.getChildren().add(new NodeLeaf(new TileSet("tileset1_1")));
+        folder2.getChildren().add(new NodeLeaf(new TileSet("tileset2_0")));
+        folder3.getChildren().add(new NodeLeaf(new TileSet("tileset3_0")));
+        folder3.getChildren().add(new NodeLeaf(new TileSet("tileset3_1")));
+        root.getChildren().add(folder1);
+        root.getChildren().add(folder2);
+        nodesHierarchy.setRoot(root);
+        return nodesHierarchy;
     }
 
-    public Stage getPrimaryStage() {
-        return primaryStage;
+    public ANode getPreviewedNode() {
+        return previewedNode.get();
     }
 
-    public ObjectProperty<ANode> previewedNodeProperty() {
+    public void setPreviewedNode(ANode previewedNode) {
+        this.previewedNode.set(previewedNode);
+    }
+
+    public SimpleObjectProperty<ANode> previewedNodeProperty() {
         return previewedNode;
     }
 
-    public ObjectProperty<NodesHierarchyDirectory> projectHierarchyProperty() {
+    public NodesHierarchy getProjectHierarchy() {
         return projectHierarchy;
-    }
-
-    public List<ANode> getProjectNodes() {
-        return projectHierarchyProperty().get().getAllNodes();
     }
 
 }

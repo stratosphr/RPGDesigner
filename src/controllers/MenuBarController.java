@@ -3,11 +3,12 @@ package controllers;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuItem;
+import models.MasterModel;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public final class MenuBarController {
+public final class MenuBarController extends AController {
 
     @FXML
     private MenuItem item_quit;
@@ -15,6 +16,10 @@ public final class MenuBarController {
     @FXML
     private void quit() {
         Platform.exit();
+    }
+
+    @Override
+    public void initModel(MasterModel model) {
     }
 
 }
