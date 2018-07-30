@@ -9,6 +9,7 @@ import models.nodes.hierarchy.visitors.IVisitableElement;
 public abstract class ANodesHierarchyElement implements IVisitableElement {
 
     private final SimpleStringProperty name;
+    private NodesFolder parent;
 
     public ANodesHierarchyElement(String name) {
         this.name = new SimpleStringProperty(name);
@@ -20,6 +21,14 @@ public abstract class ANodesHierarchyElement implements IVisitableElement {
 
     public final String getName() {
         return name.get();
+    }
+
+    public NodesFolder getParent() {
+        return parent;
+    }
+
+    protected void setParent(NodesFolder parent) {
+        this.parent = parent;
     }
 
 }

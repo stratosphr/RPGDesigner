@@ -1,22 +1,27 @@
 package models.nodes.hierarchy;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import models.nodes.hierarchy.visitors.IElementVisitor;
-
-import java.util.ArrayList;
 
 /**
  * Created by stratosphr on 30/07/2018.
  */
 public final class NodesFolder extends ANodesHierarchyElement {
 
-    private final ArrayList<ANodesHierarchyElement> children;
+    private final ObservableList<ANodesHierarchyElement> children;
 
     public NodesFolder(String name) {
         super(name);
-        this.children = new ArrayList<>();
+        this.children = FXCollections.observableArrayList();
     }
 
-    public ArrayList<ANodesHierarchyElement> getChildren() {
+    public void addChild(ANodesHierarchyElement child) {
+        children.add(child);
+        child.setParent(this);
+    }
+
+    public ObservableList<ANodesHierarchyElement> getChildren() {
         return children;
     }
 

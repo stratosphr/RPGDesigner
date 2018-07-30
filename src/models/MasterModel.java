@@ -26,14 +26,14 @@ public final class MasterModel {
         NodesFolder folder1 = new NodesFolder("Folder1");
         NodesFolder folder2 = new NodesFolder("Folder2");
         NodesFolder folder3 = new NodesFolder("Folder3");
-        folder1.getChildren().add(new NodeLeaf(new TileSet("tileset1_0")));
-        folder1.getChildren().add(folder3);
-        folder1.getChildren().add(new NodeLeaf(new TileSet("tileset1_1")));
-        folder2.getChildren().add(new NodeLeaf(new TileSet("tileset2_0")));
-        folder3.getChildren().add(new NodeLeaf(new TileSet("tileset3_0")));
-        folder3.getChildren().add(new NodeLeaf(new TileSet("tileset3_1")));
-        root.getChildren().add(folder1);
-        root.getChildren().add(folder2);
+        folder1.addChild(new NodeLeaf(new TileSet("tileset1_0")));
+        folder1.addChild(folder3);
+        folder1.addChild(new NodeLeaf(new TileSet("tileset1_1")));
+        folder2.addChild(new NodeLeaf(new TileSet("tileset2_0")));
+        folder3.addChild(new NodeLeaf(new TileSet("tileset3_0")));
+        folder3.addChild(new NodeLeaf(new TileSet("tileset3_1")));
+        root.addChild(folder1);
+        root.addChild(folder2);
         nodesHierarchy.setRoot(root);
         return nodesHierarchy;
     }
