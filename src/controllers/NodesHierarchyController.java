@@ -121,25 +121,25 @@ public final class NodesHierarchyController extends AController implements IElem
 
         @Override
         public void visit(NodesFolder folder) {
-            setEditable(false);
             Menu addMenu = new Menu("Add...");
             MenuItem addFolderItem = new MenuItem("Folder...");
             addFolderItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+            MenuItem addNodeItem = new MenuItem("Node...");
+            addNodeItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+            addMenu.getItems().addAll(addFolderItem, new SeparatorMenuItem(), addNodeItem);
             addFolderItem.setOnAction(event -> {
                 folder.addChild(new NodesFolder("New Folder"));
                 updateTree();
             });
-            MenuItem addNodeItem = new MenuItem("Node...");
-            addNodeItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
-            addMenu.getItems().addAll(addFolderItem, new SeparatorMenuItem(), addNodeItem);
-            getContextMenu().getItems().add(0, addMenu);
+            if (getContextMenu().getItems().size() != 3) {
+                getContextMenu().getItems().add(0, addMenu);
+            }
             setText(folder.getName());
             setGraphic(null);
         }
 
         @Override
         public void visit(NodeLeaf nodeLeaf) {
-            setEditable(true);
             HBox graphic = new HBox();
             graphic.setAlignment(Pos.CENTER);
             graphic.setPadding(new Insets(4, 4, 4, 4));
