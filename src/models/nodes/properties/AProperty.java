@@ -1,25 +1,28 @@
 package models.nodes.properties;
 
 import javafx.beans.property.SimpleObjectProperty;
+import models.nodes.properties.visitors.IVisitableProperty;
 
 /**
  * Created by stratosphr on 20/07/2018.
  */
-public abstract class AProperty<Value> extends SimpleObjectProperty<Value> {
+public abstract class AProperty<Value> extends SimpleObjectProperty<Value> implements IVisitableProperty {
 
-    public AProperty() {
-    }
+    private final String name;
 
-    public AProperty(Value initialValue) {
+    public AProperty(String name, Value initialValue) {
         super(initialValue);
+        this.name = name;
     }
 
-    public AProperty(Object bean, String name) {
-        super(bean, name);
+    @Override
+    public final String getName() {
+        return name;
     }
 
-    public AProperty(Object bean, String name, Value initialValue) {
-        super(bean, name, initialValue);
+    @Override
+    public final String toString() {
+        return getName() + "=" + get();
     }
 
 }

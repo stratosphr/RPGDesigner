@@ -19,7 +19,12 @@ public final class PreviewController extends AController {
 
     @Override
     public void initModel(MasterModel model) {
-        model.previewedNodeProperty().addListener((observable, oldValue, newValue) -> preview(newValue));
+        model.previewedNodeProperty().addListener((observable, oldValue, newValue) -> {
+            newValue.getProperties().forEach(aProperty -> aProperty.addListener((observable1, oldValue1, newValue1) -> {
+                preview(newValue);
+            }));
+            preview(newValue);
+        });
     }
 
     private void preview(ANode node) {
@@ -34,7 +39,7 @@ public final class PreviewController extends AController {
 
         @Override
         public void visit(TileSet tileSet) {
-            getChildren().add(new Label(tileSet.getName()));
+            getChildren().add(new Label(tileSet.toString()));
         }
 
     }

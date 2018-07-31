@@ -1,26 +1,35 @@
 package models.nodes.properties;
 
-import javafx.beans.property.SimpleObjectProperty;
+import models.nodes.properties.visitors.IPropertyVisitor;
 import utilities.Vector2;
 
 /**
  * Created by stratosphr on 30/07/2018.
  */
-public final class Vector2Property extends SimpleObjectProperty<Vector2> {
+public final class Vector2Property extends AProperty<Vector2> {
 
-    public Vector2Property() {
+    private final IntegerProperty firstProperty;
+    private final IntegerProperty secondProperty;
+
+    public Vector2Property(String name, Vector2 initialValue, IntegerProperty firstProperty, IntegerProperty secondProperty) {
+        super(name, initialValue);
+        this.firstProperty = firstProperty;
+        this.secondProperty = secondProperty;
+        firstProperty.addListener((observable, oldValue, newValue) -> set(new Vector2(newValue, get().getSecond())));
+        secondProperty.addListener((observable, oldValue, newValue) -> set(new Vector2(get().getFirst(), newValue)));
     }
 
-    public Vector2Property(Vector2 initialValue) {
-        super(initialValue);
+    public IntegerProperty getFirstProperty() {
+        return firstProperty;
     }
 
-    public Vector2Property(Object bean, String name) {
-        super(bean, name);
+    public IntegerProperty getSecondProperty() {
+        return secondProperty;
     }
 
-    public Vector2Property(Object bean, String name, Vector2 initialValue) {
-        super(bean, name, initialValue);
+    @Override
+    public void accept(IPropertyVisitor visitor) {
+        visitor.visit(this);
     }
 
 }

@@ -62,7 +62,7 @@ public final class NodesHierarchyController extends AController implements IElem
         currentFolder.getChildren().add(new TreeItem<>(nodeLeaf));
     }
 
-    private class ElementTreeCell extends TreeCell<ANodesHierarchyElement> implements IElementVisitor {
+    private final class ElementTreeCell extends TreeCell<ANodesHierarchyElement> implements IElementVisitor {
 
         private ElementTreeCell() {
             addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {

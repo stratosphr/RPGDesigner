@@ -1,5 +1,7 @@
 package models.nodes.properties;
 
+import models.nodes.properties.visitors.IPropertyVisitor;
+
 import java.io.File;
 
 /**
@@ -7,19 +9,13 @@ import java.io.File;
  */
 public final class ImageProperty extends AProperty<File> {
 
-    public ImageProperty() {
+    public ImageProperty(String name, File initialValue) {
+        super(name, initialValue);
     }
 
-    public ImageProperty(File initialValue) {
-        super(initialValue);
-    }
-
-    public ImageProperty(Object bean, String name) {
-        super(bean, name);
-    }
-
-    public ImageProperty(Object bean, String name, File initialValue) {
-        super(bean, name, initialValue);
+    @Override
+    public void accept(IPropertyVisitor visitor) {
+        visitor.visit(this);
     }
 
 }
