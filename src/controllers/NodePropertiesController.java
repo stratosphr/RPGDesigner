@@ -6,12 +6,15 @@ import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.TreeItemPropertyValueFactory;
+import javafx.scene.layout.HBox;
+import javafx.stage.FileChooser;
 import javafx.util.Callback;
 import models.MasterModel;
 import models.nodes.ANode;
 import models.nodes.properties.*;
 import models.nodes.properties.visitors.IPropertyVisitor;
+
+import java.io.File;
 
 /**
  * Created by stratosphr on 20/07/2018.
@@ -31,7 +34,8 @@ public final class NodePropertiesController extends AController implements IProp
 
     @Override
     public void initModel(MasterModel model) {
-        col_properties.setCellValueFactory(new TreeItemPropertyValueFactory<>("image"));
+        col_properties.setCellValueFactory(new PropertyNameCellFactory());
+        col_values.setCellValueFactory(new PropertyValueCellFactory());
         if (model.getPreviewedNode() != null) {
             displayProperties(model.getPreviewedNode());
         } else {
@@ -51,8 +55,6 @@ public final class NodePropertiesController extends AController implements IProp
         pane_nodeProperties.setDisable(false);
         table_previewedNodeProperties.setRoot(new TreeItem<>());
         table_previewedNodeProperties.setShowRoot(false);
-        col_properties.setCellValueFactory(new PropertyNameCellFactory());
-        col_values.setCellValueFactory(new PropertyValueCellFactory());
         currentItem = table_previewedNodeProperties.getRoot();
         for (AProperty<?> property : node.getProperties()) {
             property.accept(this);
@@ -84,7 +86,7 @@ public final class NodePropertiesController extends AController implements IProp
         currentItem.getChildren().add(new TreeItem<>(integerProperty));
     }
 
-    private final class PropertyNameCellFactory implements Callback<TreeTableColumn.CellDataFeatures<AProperty<?>, String>, ObservableValue<String>> {
+    private class PropertyNameCellFactory implements Callback<TreeTableColumn.CellDataFeatures<AProperty<?>, String>, ObservableValue<String>> {
 
         @Override
         public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<AProperty<?>, String> param) {
@@ -105,6 +107,9 @@ public final class NodePropertiesController extends AController implements IProp
 
         @Override
         public void visit(Vector2Property vector2Property) {
+            Label label = new Label(vector2Property.get().toString());
+            vector2Property.addListener((observable, oldValue, newValue) -> label.setText(newValue.toString()));
+            node = label;
         }
 
         @Override
@@ -113,6 +118,26 @@ public final class NodePropertiesController extends AController implements IProp
 
         @Override
         public void visit(ImageProperty imageProperty) {
+            HBox hBox = new HBox();
+            hBox.setSpacing(5);
+            TextField textField = new TextField();
+            textField.setEditable(false);
+            textField.setPromptText("Click to select " + imageProperty.getName().toLowerCase() + "...");
+            Button button = new Button("...");
+            Runnable fileChooserLoader = () -> {
+                FileChooser fileChooser = new FileChooser();
+                imageProperty.getFilters().stream().map(AFileProperty.EFileFilters::getExtensionFilter).forEach(filters -> fileChooser.getExtensionFilters().add(filters));
+                File file = fileChooser.showOpenDialog(pane_nodeProperties.getScene().getWindow());
+                if (file != null) {
+                    textField.setText(file.getAbsolutePath());
+                    imageProperty.set(file);
+                }
+                button.requestFocus();
+            };
+            textField.setOnMouseClicked(event -> fileChooserLoader.run());
+            button.setOnAction(event -> fileChooserLoader.run());
+            hBox.getChildren().addAll(textField, button);
+            node = hBox;
         }
 
         @Override

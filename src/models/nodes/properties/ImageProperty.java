@@ -7,10 +7,10 @@ import java.io.File;
 /**
  * Created by stratosphr on 30/07/2018.
  */
-public final class ImageProperty extends AProperty<File> {
+public final class ImageProperty extends AFileProperty {
 
     public ImageProperty(String name, File initialValue) {
-        super(name, initialValue);
+        super(name, initialValue, EFileFilters.IMAGES);
     }
 
     @Override
