@@ -4,15 +4,13 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import models.MasterModel;
 import models.nodes.hierarchy.ANodesHierarchyElement;
@@ -65,6 +63,14 @@ public final class NodesHierarchyController extends AController implements IElem
     }
 
     private class ElementTreeCell extends TreeCell<ANodesHierarchyElement> implements IElementVisitor {
+
+        private ElementTreeCell() {
+            addEventFilter(MouseEvent.MOUSE_PRESSED, (MouseEvent event) -> {
+                if (event.getClickCount() % 2 == 0 && event.getButton().equals(MouseButton.PRIMARY)) {
+                    event.consume();
+                }
+            });
+        }
 
         @Override
         public void startEdit() {
@@ -121,21 +127,22 @@ public final class NodesHierarchyController extends AController implements IElem
 
         @Override
         public void visit(NodesFolder folder) {
-            Menu addMenu = new Menu("Add...");
-            MenuItem addFolderItem = new MenuItem("Folder...");
-            addFolderItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
-            MenuItem addNodeItem = new MenuItem("Node...");
-            addNodeItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
-            addMenu.getItems().addAll(addFolderItem, new SeparatorMenuItem(), addNodeItem);
-            addFolderItem.setOnAction(event -> {
-                folder.addChild(new NodesFolder("New Folder"));
-                updateTree();
-            });
-            if (getContextMenu().getItems().size() != 3) {
+            if (getContextMenu().getItems().size() <= 2) {
+                Menu addMenu = new Menu("Add...");
+                MenuItem addFolderItem = new MenuItem("Folder...");
+                addFolderItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN, KeyCombination.SHIFT_DOWN));
+                MenuItem addNodeItem = new MenuItem("Node...");
+                addNodeItem.setAccelerator(new KeyCodeCombination(KeyCode.N, KeyCombination.CONTROL_DOWN));
+                addMenu.getItems().addAll(addFolderItem, new SeparatorMenuItem(), addNodeItem);
+                addFolderItem.setOnAction(event -> {
+                    NodesFolder newFolder = new NodesFolder("New Folder");
+                    folder.addChild(newFolder);
+                    updateTree();
+                });
                 getContextMenu().getItems().add(0, addMenu);
             }
             setText(folder.getName());
-            setGraphic(null);
+            setGraphic(new Rectangle(10, 10, Color.BLACK));
         }
 
         @Override
@@ -148,6 +155,12 @@ public final class NodesHierarchyController extends AController implements IElem
             graphic.getChildren().add(nodeType);
             setText(nodeLeaf.getName());
             setGraphic(graphic);
+            addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
+                if (event.getClickCount() % 2 == 0 && event.getButton() == MouseButton.PRIMARY) {
+                    model.setPreviewedNode(nodeLeaf.getNode());
+                    event.consume();
+                }
+            });
         }
 
     }
