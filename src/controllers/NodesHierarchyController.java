@@ -1,22 +1,14 @@
 package controllers;
 
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import models.MasterModel;
 import models.nodes.hierarchy.ANodesHierarchyElement;
 import models.nodes.hierarchy.NodeLeaf;
 import models.nodes.hierarchy.NodesFolder;
 import models.nodes.hierarchy.visitors.IElementVisitor;
+import views.ItemGraphic;
 
 /**
  * Created by stratosphr on 20/07/2018.
@@ -142,22 +134,16 @@ public final class NodesHierarchyController extends AController implements IElem
                 getContextMenu().getItems().add(0, addMenu);
             }
             setText(folder.getName());
-            setGraphic(new Rectangle(10, 10, Color.BLACK));
+            setGraphic(new ItemGraphic(folder));
         }
 
         @Override
-        public void visit(NodeLeaf nodeLeaf) {
-            HBox graphic = new HBox();
-            graphic.setAlignment(Pos.CENTER);
-            graphic.setPadding(new Insets(4, 4, 4, 4));
-            graphic.setBackground(new Background(new BackgroundFill(Color.ORANGE, new CornerRadii(3), Insets.EMPTY)));
-            Text nodeType = new Text(nodeLeaf.getNode().getClass().getSimpleName());
-            graphic.getChildren().add(nodeType);
-            setText(nodeLeaf.getName());
-            setGraphic(graphic);
+        public void visit(NodeLeaf leaf) {
+            setText(leaf.getName());
+            setGraphic(new ItemGraphic(leaf));
             addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
                 if (event.getClickCount() % 2 == 0 && event.getButton() == MouseButton.PRIMARY) {
-                    model.setPreviewedNode(nodeLeaf.getNode());
+                    model.setPreviewedNode(leaf.getNode());
                     event.consume();
                 }
             });

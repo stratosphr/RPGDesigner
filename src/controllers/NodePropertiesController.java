@@ -76,6 +76,7 @@ public final class NodePropertiesController extends AController implements IProp
 
     @Override
     public void visit(ImageProperty imageProperty) {
+        currentItem.getChildren().add(new TreeItem<>(imageProperty));
     }
 
     @Override
@@ -83,7 +84,7 @@ public final class NodePropertiesController extends AController implements IProp
         currentItem.getChildren().add(new TreeItem<>(integerProperty));
     }
 
-    private final class PropertyNameCellFactory implements javafx.util.Callback<TreeTableColumn.CellDataFeatures<AProperty<?>, String>, javafx.beans.value.ObservableValue<String>> {
+    private final class PropertyNameCellFactory implements Callback<TreeTableColumn.CellDataFeatures<AProperty<?>, String>, ObservableValue<String>> {
 
         @Override
         public ObservableValue<String> call(TreeTableColumn.CellDataFeatures<AProperty<?>, String> param) {

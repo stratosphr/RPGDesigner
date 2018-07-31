@@ -11,12 +11,12 @@ import models.nodes.properties.Vector2Property;
 @SuppressWarnings("EmptyMethod")
 public interface IPropertyVisitor {
 
-    void visit(Vector2Property vector2Property);
+    void visit(IntegerProperty integerProperty);
 
-    void visit(TileSetProperty tileSetProperty);
+    void visit(Vector2Property vector2Property);
 
     void visit(ImageProperty imageProperty);
 
-    void visit(IntegerProperty integerProperty);
+    void visit(TileSetProperty tileSetProperty);
 
 }

@@ -19,11 +19,11 @@ public final class PreviewController extends AController {
 
     @Override
     public void initModel(MasterModel model) {
-        model.previewedNodeProperty().addListener((observable, oldValue, newValue) -> {
-            newValue.getProperties().forEach(aProperty -> aProperty.addListener((observable1, oldValue1, newValue1) -> {
-                preview(newValue);
+        model.previewedNodeProperty().addListener((observable, oldValue, previewedNode) -> {
+            previewedNode.getProperties().forEach(property -> property.addListener((observable1, oldValue1, newValue1) -> {
+                preview(previewedNode);
             }));
-            preview(newValue);
+            preview(previewedNode);
         });
     }
 
