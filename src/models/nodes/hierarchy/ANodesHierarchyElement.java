@@ -8,14 +8,14 @@ import models.nodes.hierarchy.visitors.IVisitableElement;
  */
 public abstract class ANodesHierarchyElement implements IVisitableElement {
 
-    private SimpleStringProperty name;
+    private final SimpleStringProperty name;
     private NodesFolder parent;
 
-    public ANodesHierarchyElement(String name) {
+    protected ANodesHierarchyElement(String name) {
         this.name = new SimpleStringProperty(name);
     }
 
-    public final SimpleStringProperty nameProperty() {
+    protected final SimpleStringProperty nameProperty() {
         return name;
     }
 

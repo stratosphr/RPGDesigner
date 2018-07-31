@@ -10,7 +10,7 @@ public abstract class AProperty<Value> extends SimpleObjectProperty<Value> imple
 
     private final String name;
 
-    public AProperty(String name, Value initialValue) {
+    protected AProperty(String name, Value initialValue) {
         super(initialValue);
         this.name = name;
     }

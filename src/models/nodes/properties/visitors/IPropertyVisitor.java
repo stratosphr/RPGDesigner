@@ -8,6 +8,7 @@ import models.nodes.properties.Vector2Property;
 /**
  * Created by stratosphr on 31/07/2018.
  */
+@SuppressWarnings("EmptyMethod")
 public interface IPropertyVisitor {
 
     void visit(Vector2Property vector2Property);

@@ -13,7 +13,7 @@ import models.nodes.hierarchy.NodesHierarchy;
 public final class MasterModel {
 
     private final NodesHierarchy projectHierarchy;
-    private SimpleObjectProperty<ANode> previewedNode;
+    private final SimpleObjectProperty<ANode> previewedNode;
 
     public MasterModel() {
         this.previewedNode = new SimpleObjectProperty<>(null);

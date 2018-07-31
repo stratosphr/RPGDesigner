@@ -16,7 +16,7 @@ public abstract class ANode implements IVisitableNode {
     private final SimpleStringProperty name;
     private final List<AProperty<?>> properties;
 
-    public ANode(String name) {
+    protected ANode(String name) {
         this.name = new SimpleStringProperty(name);
         this.properties = new ArrayList<>();
     }

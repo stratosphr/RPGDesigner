@@ -19,7 +19,7 @@ import models.nodes.properties.visitors.IPropertyVisitor;
 public final class NodePropertiesController extends AController implements IPropertyVisitor {
 
     @FXML
-    public TitledPane pane_nodeProperties;
+    private TitledPane pane_nodeProperties;
     @FXML
     private TreeTableView<AProperty<?>> table_previewedNodeProperties;
     @FXML
